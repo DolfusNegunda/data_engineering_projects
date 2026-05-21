@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dolfus Negunda — Data Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:       #1a1d1a;
+  --ink-soft:  #2c322c;
+  --paper:     #f5f0e8;
+  --paper-2:   #ede6d8;
+  --paper-3:   #e0d6c3;
+  --rule:      #1a1d1a;
+  --mute:      #6b6258;
+  --accent:    #c2410c;
+  --accent-2:  #a16207;
+  --accent-3:  #365314;
+  --display:   'Instrument Serif', Georgia, serif;
+  --body:      'Geist', system-ui, sans-serif;
+  --mono:      'Geist Mono', ui-monospace, monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;font-weight:400;min-height:100vh;position:relative}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 0% 0%, rgba(194,65,12,0.05), transparent 45%),radial-gradient(ellipse at 100% 100%, rgba(54,83,20,0.06), transparent 50%)}
+a{color:inherit;text-decoration:none;transition:color 0.2s ease}
+.page{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:56px 56px 80px}
+.masthead{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;padding-bottom:14px;border-bottom:1px solid var(--rule);margin-bottom:56px}
+.mast-mark{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--mute)}
+.mast-mark .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.mast-meta{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--mute);text-align:right;line-height:1.6}
+.hero{margin-bottom:88px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(3.2rem, 7vw, 5.6rem);line-height:1;letter-spacing:-0.02em;margin-bottom:32px;color:var(--ink)}
+.hero h1 .em{font-style:italic;color:var(--accent)}
+.hero .intro{font-family:var(--body);font-size:1.08rem;line-height:1.7;letter-spacing:-0.005em;max-width:640px;color:var(--ink-soft);font-weight:400}
+.hero .intro .accent{color:var(--accent);font-weight:500}
+.bridge{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin:0 0 88px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.bridge-side{padding:36px 32px;position:relative}
+.bridge-side.left{text-align:right}
+.bridge-side.right{text-align:left}
+.bridge-side .label{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--mute);margin-bottom:14px}
+.bridge-side .title{font-family:var(--display);font-style:italic;font-size:1.7rem;line-height:1.15;letter-spacing:-0.01em;margin-bottom:14px;color:var(--ink)}
+.bridge-side.left .title{color:var(--accent-3)}
+.bridge-side.right .title{color:var(--accent)}
+.bridge-side p{font-size:0.92rem;line-height:1.6;color:var(--ink-soft);max-width:280px}
+.bridge-side.left p{margin-left:auto}
+.bridge-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;position:relative;min-width:80px}
+.bridge-center::before,.bridge-center::after{content:'';position:absolute;left:50%;width:1px;background:var(--rule)}
+.bridge-center::before{top:0;height:35%}
+.bridge-center::after{bottom:0;height:35%}
+.bridge-icon{width:40px;height:40px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.bridge-icon::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--accent)}
+.bridge-center .label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--mute);margin-top:10px}
+.divider{display:flex;align-items:center;gap:16px;margin:0 0 36px;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink)}
+.divider .num{color:var(--accent);font-weight:500}
+.divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right, var(--rule), transparent)}
+.about{margin-bottom:80px;max-width:680px}
+.about p{font-family:var(--display);font-weight:400;font-size:1.4rem;line-height:1.45;letter-spacing:-0.01em;color:var(--ink);margin-bottom:18px}
+.about p:last-child{margin-bottom:0}
+.about p em{font-style:italic;color:var(--accent)}
+.cap-section{margin-bottom:72px}
+.cap-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.cap{background:var(--paper);padding:28px 26px;transition:background 0.3s ease;position:relative}
+.cap:hover{background:var(--paper-2)}
+.cap .marker{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.cap .ord{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;color:var(--accent);font-weight:500}
+.cap .line{flex:1;height:1px;background:var(--accent);opacity:0.3}
+.cap h3{font-family:var(--display);font-weight:400;font-style:italic;font-size:1.45rem;line-height:1.2;letter-spacing:-0.01em;margin-bottom:10px;color:var(--ink)}
+.cap p{font-size:0.9rem;line-height:1.6;color:var(--ink-soft)}
+.toolbox{display:grid;grid-template-columns:160px 1fr;gap:32px;padding:24px 0;border-bottom:1px solid var(--paper-3);align-items:baseline}
+.toolbox:last-of-type{border-bottom:none}
+.toolbox .heading{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent)}
+.toolbox .heading small{display:block;margin-top:4px;color:var(--mute);font-family:var(--body);font-style:italic;font-size:0.78rem;letter-spacing:0;text-transform:none}
+.toolbox .items{font-family:var(--display);font-size:1.1rem;line-height:1.7;color:var(--ink)}
+.toolbox .items span:not(:last-child)::after{content:'  ·  ';color:var(--accent-2);margin:0 4px}
+.colophon{margin-top:80px;padding:40px 36px;background:var(--ink);color:var(--paper);border-radius:2px;position:relative;overflow:hidden}
+.colophon::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3))}
+.colophon-grid{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px}
+.colophon .name{font-family:var(--display);font-style:italic;font-weight:400;font-size:2rem;letter-spacing:-0.01em;line-height:1.1;margin-bottom:6px;color:var(--paper)}
+.colophon .role{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--paper-2);opacity:0.7}
+.colophon-links{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.colophon-link{font-family:var(--mono);font-size:0.78rem;letter-spacing:0.1em;color:var(--paper);padding:8px 14px;border:1px solid rgba(245,240,232,0.25);border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s ease;text-transform:uppercase}
+.colophon-link:hover{border-color:var(--accent);color:var(--accent);background:rgba(194,65,12,0.08)}
+.colophon-link .arrow{font-family:var(--body);font-size:0.9rem;transition:transform 0.25s ease}
+.colophon-link:hover .arrow{transform:translateX(3px)}
+.colophon-creds{margin-top:32px;padding-top:24px;border-top:1px solid rgba(245,240,232,0.15);font-family:var(--mono);font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--paper-2);opacity:0.75;line-height:1.9}
+.colophon-creds .cred-tag{color:var(--accent-2);margin-right:6px}
+@media (max-width: 760px){
+  .page{padding:36px 22px 56px}
+  .masthead{grid-template-columns:1fr;gap:8px}
+  .mast-meta{text-align:left}
+  .bridge{grid-template-columns:1fr}
+  .bridge-side{padding:28px 22px;text-align:left !important}
+  .bridge-side.left p{margin-left:0}
+  .bridge-side.left{border-bottom:1px solid var(--rule)}
+  .bridge-center{padding:20px;flex-direction:row;gap:14px;border-bottom:1px solid var(--rule)}
+  .bridge-center::before,.bridge-center::after{display:none}
+  .cap-grid{grid-template-columns:1fr}
+  .toolbox{grid-template-columns:1fr;gap:8px}
+  .colophon-grid{grid-template-columns:1fr;gap:28px}
+  .colophon-links{align-items:flex-start}
+  .about p{font-size:1.2rem}
+}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{animation:rise 0.8s ease both}
+.hero .intro{animation:rise 0.8s 0.15s ease both}
+.bridge{animation:rise 0.9s 0.3s ease both}
+.cap{animation:rise 0.7s ease both}
+.cap:nth-child(1){animation-delay:0.1s}
+.cap:nth-child(2){animation-delay:0.18s}
+.cap:nth-child(3){animation-delay:0.26s}
+.cap:nth-child(4){animation-delay:0.34s}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <div class="mast-mark"><span class="dot"></span>Data Engineer · Practising</div>
+    <div class="mast-meta">Johannesburg<br>Open to conversation</div>
+  </header>
+
+  <section class="hero">
+    <h1>Between the <span class="em">data</span><br>and the <span class="em">decision</span>.</h1>
+    <p class="intro">
+      I'm a data engineer working on the layer that turns raw data into something
+      a business can act on — and increasingly, on the
+      <span class="accent">translation</span> between what the technical work makes possible
+      and what it means for the people relying on it.
+    </p>
+  </section>
+
+  <div class="bridge">
+    <div class="bridge-side left">
+      <div class="label">— Engineering</div>
+      <div class="title">The system<br>that holds up</div>
+      <p>Contracts at the source, modelling in the middle, lineage you can follow, and automation that quietly keeps the lights on.</p>
+    </div>
+    <div class="bridge-center">
+      <div class="bridge-icon"></div>
+      <div class="label">Bridge</div>
+    </div>
+    <div class="bridge-side right">
+      <div class="label">Outcomes —</div>
+      <div class="title">The decision<br>it enables</div>
+      <p>Insight a business can stand behind, delivered with provenance intact and language the room actually speaks.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span class="num">§ 01</span> About</div>
+  <section class="about">
+    <p>The interesting work in data isn't the pipeline — it's everything around it.</p>
+    <p>The contracts upstream, the modelling in the middle, the lineage and observability that make the system <em>legible</em>, and the automation that keeps it honest.</p>
+    <p>That's where I spend my time, and increasingly, on the harder problem alongside it: translating what the engineering makes possible into outcomes the business can act on.</p>
+    <p>AI sits inside the practice, not on top of it — Claude Code as a collaborator at the keyboard, well-mannered agents where they add signal rather than noise.</p>
+  </section>
+
+  <div class="divider"><span class="num">§ 02</span> Practice</div>
+  <section class="cap-section">
+    <div class="cap-grid">
+      <article class="cap">
+        <div class="marker"><span class="ord">i.</span><span class="line"></span></div>
+        <h3>Cloud-native engineering</h3>
+        <p>Azure-native platforms designed to age well — clear contracts, dimensional modelling that holds up, and pipelines that are safe to re-run on a Monday morning.</p>
+      </article>
+      <article class="cap">
+        <div class="marker"><span class="ord">ii.</span><span class="line"></span></div>
+        <h3>Quality &amp; governance</h3>
+        <p>Treated as architecture decisions rather than afterthoughts. Lineage that survives a handover. Observability that tells the truth about what the system is doing.</p>
+      </article>
+      <article class="cap">
+        <div class="marker"><span class="ord">iii.</span><span class="line"></span></div>
+        <h3>Decision enablement</h3>
+        <p>The translation layer between engineering and business — turning correctness into clarity, and clarity into something a decision-maker can hold.</p>
+      </article>
+      <article class="cap">
+        <div class="marker"><span class="ord">iv.</span><span class="line"></span></div>
+        <h3>AI in the practice</h3>
+        <p>Claude Code as a daily collaborator in the engineering. Schema-grounded agents as part of the deliverable when the use case earns them.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="divider"><span class="num">§ 03</span> Toolbox</div>
+  <section>
+    <div class="toolbox">
+      <div class="heading">Platform<small>where the work lives</small></div>
+      <div class="items"><span>Azure</span><span>Databricks</span><span>Delta Lake</span><span>Kubernetes</span><span>Docker</span></div>
+    </div>
+    <div class="toolbox">
+      <div class="heading">Languages<small>the medium</small></div>
+      <div class="items"><span>Python</span><span>T-SQL</span><span>PySpark</span><span>SQL</span></div>
+    </div>
+    <div class="toolbox">
+      <div class="heading">Workbench<small>how it's made</small></div>
+      <div class="items"><span>Claude Code</span><span>Git &amp; CI/CD</span><span>k9s</span><span>Power BI</span></div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <div class="colophon-grid">
+      <div>
+        <div class="name">Dolfus Negunda</div>
+        <div class="role">Engineer · Practitioner · Translator</div>
+      </div>
+      <div class="colophon-links">
+        <a class="colophon-link" href="https://www.linkedin.com/in/dolfus-negunda-9714961a1" target="_blank">Start a conversation <span class="arrow">→</span></a>
+        <a class="colophon-link" href="https://medium.com/@dolfneg" target="_blank">Notes on Medium <span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="colophon-creds">
+      <span class="cred-tag">Credentials —</span>
+      Microsoft Azure Administrator Associate ·
+      Databricks Data Engineer Associate ·
+      Microsoft Power BI Data Analyst Associate ·
+      Data Science with Python, UCT
+    </div>
+  </footer>
+</div>
+</body>
+</html>
